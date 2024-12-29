@@ -49,5 +49,6 @@ class Letter extends Model
         return $this->allow_comments;
     }
 
+    // Define the relationship to the User model
 
 }

@@ -25,17 +25,18 @@ class ProfileController extends Controller
      */
     public function update(Request $request): RedirectResponse
     {
-        // Validate incoming request data (excluding email since it's not editable)
+        // Validate incoming request data, including username
         $request->validate([
             'name' => 'required|string|max:255',
             'surname' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username,' . $request->user()->id, // Unique validation, ignoring the current user's username
         ]);
 
         // Get the authenticated user
         $user = $request->user();
 
-        // Only update name and surname, leaving email unchanged
-        $user->fill($request->only(['name', 'surname']));
+        // Update name, surname, and username
+        $user->fill($request->only(['name', 'surname', 'username']));
 
         // Save the updated user data
         $user->save();
