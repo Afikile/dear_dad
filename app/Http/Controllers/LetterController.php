@@ -149,4 +149,7 @@ class LetterController extends Controller
         // Redirect back to the letter's page with the new reply
         return redirect()->route('letters.show', $letter_id)->with('success', 'Reply posted successfully!');
     }
+
+
+    
 }

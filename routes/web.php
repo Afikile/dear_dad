@@ -7,6 +7,7 @@ use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\UserRegistrationController;
+use App\Models\Letter;
 
 // Logout Route
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
@@ -64,4 +65,11 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::get('/register', [UserRegistrationController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [UserRegistrationController::class, 'register']);
 
-Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+// Route for showing individual letters
+Route::get('/letters/{id}', [LetterController::class, 'show'])->name('letters.show');
+
+// routes/web.php
+Route::get('/', function () {
+    $letters = Letter::paginate(10);  // Paginate with 10 letters per page
+    return view('home', compact('letters'));
+});

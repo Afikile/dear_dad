@@ -1,9 +1,14 @@
-<!-- resources/views/letters/show.blade.php -->
-
 @extends('layouts.app')
 
 @section('content')
 <div class="container">
+    <!-- Display Success Message -->
+    @if(session('success'))
+        <div class="bg-green-500 text-white p-4 rounded mb-4">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <!-- Original Post -->
     <div class="mb-6 p-4 border rounded {{ $letter->id % 2 == 0 ? 'bg-gray-100' : 'bg-gray-200' }}">
         <h1 class="text-2xl font-bold mb-4">{{ $letter->title }}</h1>

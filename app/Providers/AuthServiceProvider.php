@@ -1,35 +1,28 @@
 <?php
 
-namespace App\Providers;
-
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\Models\Letter;
-use App\Policies\LetterPolicy;
+use Illuminate\Support\ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
     /**
-     * The policy mappings for the application.
+     * Register any authentication / authorization services.
      *
-     * @var array
+     * @return void
      */
-    protected $policies = [
-        Letter::class => LetterPolicy::class,
-    ];
+    public function register()
+    {
+        // Register any application services.
+    }
 
     /**
-     * Register any authentication / authorization services.
+     * Bootstrap any authentication / authorization services.
      *
      * @return void
      */
     public function boot()
     {
         $this->registerPolicies();
-
-        // You can define gates here, for example:
-        Gate::define('view-letter', function ($user, $letter) {
-            return $user->id === $letter->user_id; // Example condition
-        });
     }
 }
+
