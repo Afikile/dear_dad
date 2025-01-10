@@ -19,7 +19,8 @@ class LetterPolicy
      */
     public function update(User $user, Letter $letter)
     {
-        return $user->id === $letter->user_id;
+        // Compare based on username instead of user_id
+        return $user->username === $letter->username;
     }
 
     /**
@@ -31,7 +32,7 @@ class LetterPolicy
      */
     public function delete(User $user, Letter $letter)
     {
-        return $user->id === $letter->user_id;
+        // Compare based on username instead of user_id
+        return $user->username === $letter->username;
     }
 }
-

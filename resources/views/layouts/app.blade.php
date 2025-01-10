@@ -98,7 +98,7 @@
                     @auth
                         <li class="nav-item">
                             <!-- Update this link to point to home -->
-                            <a class="nav-link" href="{{ url('/home') }}">Home</a>
+                            <a class="nav-link" href="{{ url('/') }}">Home</a>
                         </li>
                         <li class="nav-item">
                             <form action="{{ route('logout') }}" method="POST" class="d-inline">

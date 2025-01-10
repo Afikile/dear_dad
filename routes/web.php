@@ -30,6 +30,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 Route::middleware(['auth', 'verified'])->group(function () {
     // Letters Routes (create, store, edit, update, destroy)
     Route::resource('letters', LetterController::class)->except(['index', 'show']);
+    
 
     // Comment Routes (for authenticated and verified users)
     Route::post('/letters/{letter}/comments', [CommentController::class, 'store'])->name('comments.store');
