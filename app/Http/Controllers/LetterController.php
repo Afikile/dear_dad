@@ -12,6 +12,7 @@ class LetterController extends Controller
     // Show all letters
     public function index()
     {
+        // Retrieve the letters with pagination
         $letters = Letter::latest()->paginate(10);
         return view('letters.index', compact('letters'));
     }
@@ -19,20 +20,24 @@ class LetterController extends Controller
     // Show form to create a new letter
     public function create()
     {
+        // Ensure the user is authenticated before creating a letter
+        $this->middleware('auth');
+
         return view('letters.create');
     }
 
     // Store a new letter
     public function store(Request $request)
     {
+        // Validate the letter content, preventing prohibited words
         $request->validate([
             'content' => ['required', 'string', 'max:255', new ProhibitedWords()],
         ]);
 
+        // Create a new letter and associate it with the logged-in user's username
         $letter = new Letter();
         $letter->content = $request->content;
-        $letter->user_id = Auth::id();
-        $letter->username = Auth::user()->username;
+        $letter->username = Auth::user()->username; // Store the username from the authenticated user
         $letter->save();
 
         return redirect()->route('letters.index')->with('success', 'Letter submitted successfully!');
@@ -41,18 +46,24 @@ class LetterController extends Controller
     // Show form to edit a letter
     public function edit(Letter $letter)
     {
+        // Ensure the user is authorized to update the letter (only the owner can edit)
         $this->authorize('update', $letter);
+
         return view('letters.edit', compact('letter'));
     }
 
     // Update an existing letter
     public function update(Request $request, Letter $letter)
     {
+        // Ensure the user is authorized to update the letter
+        $this->authorize('update', $letter);
+
+        // Validate and update the letter content
         $request->validate([
             'content' => ['required', 'string', 'max:255', new ProhibitedWords()],
         ]);
 
-        $this->authorize('update', $letter);
+        // Update the letter with the new content
         $letter->content = $request->content;
         $letter->save();
 
@@ -62,7 +73,10 @@ class LetterController extends Controller
     // Delete a letter
     public function destroy(Letter $letter)
     {
+        // Ensure the user is authorized to delete the letter (only the owner can delete)
         $this->authorize('delete', $letter);
+
+        // Delete the letter
         $letter->delete();
 
         return redirect()->route('letters.index')->with('success', 'Letter deleted successfully!');

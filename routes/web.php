@@ -6,12 +6,9 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\VerifiedController;
 use Illuminate\Http\Request;
+use App\Http\Controllers\AdminController; // Ensure AdminController is included
 
-
-// Home route - this will now point to home.blade
-Route::get('/home', [LetterController::class, 'index'])->name('home');
-
-// Auth routes (only if you're using the default Laravel authentication)
+// Auth routes (default Laravel authentication)
 Auth::routes(); 
 
 // Email verification routes
@@ -31,7 +28,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 // Protect routes for logged-in and verified users
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Letters Routes (except index and show)
+    // Letters Routes (create, store, edit, update, destroy)
     Route::resource('letters', LetterController::class)->except(['index', 'show']);
 
     // Comment Routes (for authenticated and verified users)
@@ -47,9 +44,8 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 });
 
+// Home route (Only define one home route, use '/')
+Route::get('/', [LetterController::class, 'index'])->name('home');
+
 // Logout route
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
-
-
-// Home route
-Route::get('/', [LetterController::class, 'index'])->name('home');

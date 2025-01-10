@@ -13,13 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-    Schema::create('letters', function (Blueprint $table) {
-        $table->id();
-        $table->string('content');
-        $table->string('username'); // New column for username
-        $table->boolean('is_approved')->default(false);
-        $table->timestamps();
-    });
+        // Create the letters table only if it doesn't exist
+        if (!Schema::hasTable('letters')) {
+            Schema::create('letters', function (Blueprint $table) {
+                $table->id();
+                $table->string('content');
+                
+                // Add the 'username' column only if it doesn't exist
+                if (!Schema::hasColumn('letters', 'username')) {
+                    $table->string('username');
+                }
+                
+                $table->boolean('is_approved')->default(false);
+                $table->timestamps();
+            });
+        }
     }
 
     /**
