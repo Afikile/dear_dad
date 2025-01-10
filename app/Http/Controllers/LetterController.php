@@ -25,6 +25,7 @@ class LetterController extends Controller
 
         return view('letters.create');
     }
+    
 
     // Store a new letter
     public function store(Request $request)

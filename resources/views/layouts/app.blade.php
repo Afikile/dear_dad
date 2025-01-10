@@ -9,7 +9,6 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        
         body {
             display: flex;
             flex-direction: column;
@@ -65,9 +64,7 @@
         .navbar-nav .profile-name {
             color: #fff;
             font-weight: 600;
-            margin-right: 20px;
-            display: flex;
-            align-items: center;
+            margin-left: 15px;
         }
     </style>
 </head>
@@ -85,9 +82,6 @@
                 <ul class="navbar-nav ms-auto align-items-center">
                     @auth
                         <li class="nav-item">
-                            <span class="profile-name">{{ Auth::user()->username }}</span>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="{{ url('/') }}">Home</a>
                         </li>
                         <li class="nav-item">
@@ -98,6 +92,13 @@
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dashboard') }}">Dashboard</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <span class="profile-name">{{ Auth::user()->username }}</span>
                         </li>
                     @else
                         <li class="nav-item">
