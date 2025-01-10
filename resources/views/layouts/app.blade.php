@@ -83,13 +83,26 @@
             background-color: #2c3e50;
             color: #ecf0f1;
         }
+
+        /* Styling for the logo */
+        .navbar-brand img {
+            height: 50px; /* Increased size of the logo */
+            width: auto; /* Maintain aspect ratio */
+        }
+
+        .navbar-brand {
+            padding: 0; /* Remove padding around the logo */
+        }
     </style>
 </head>
 <body class="light-mode">
 
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <a class="navbar-brand" href="{{ url('/') }}">Dear Dad</a>
+            <!-- Logo only (no text) -->
+            <a class="navbar-brand" href="{{ url('/') }}">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo"> <!-- Logo without text -->
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -97,7 +110,6 @@
                 <ul class="navbar-nav ms-auto">
                     @auth
                         <li class="nav-item">
-                            <!-- Update this link to point to home -->
                             <a class="nav-link" href="{{ url('/') }}">Home</a>
                         </li>
                         <li class="nav-item">
