@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Main layout styling for sticky footer */
+        
         body {
             display: flex;
             flex-direction: column;
@@ -20,7 +20,7 @@
         }
 
         main {
-            flex: 1; /* Push footer to the bottom */
+            flex: 1;
         }
 
         nav {
@@ -31,24 +31,11 @@
         .navbar-nav .nav-item .nav-link {
             color: #fff;
             font-weight: 600;
+            transition: color 0.3s ease; /* Smooth transition for hover effect */
         }
 
         .navbar-nav .nav-item .nav-link:hover {
-            color: #f1f1f1;
-            text-decoration: underline;
-        }
-
-        .btn-logout {
-            background: #ff4757;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            transition: background 0.3s ease;
-        }
-
-        .btn-logout:hover {
-            background: #ff6b81;
+            color: #ffdd57; /* Change this color to your preferred hover color */
         }
 
         .list-group-item {
@@ -63,14 +50,6 @@
             transform: scale(1.05);
         }
 
-        .container {
-            margin-top: 30px;
-        }
-
-        .list-group-item strong {
-            color: #6c5ce7;
-        }
-
         footer {
             background-color: #2d3436;
             color: #fff;
@@ -78,44 +57,46 @@
             padding: 20px;
         }
 
-        /* Dark Mode */
-        .dark-mode {
-            background-color: #2c3e50;
-            color: #ecf0f1;
-        }
-
-        /* Styling for the logo */
         .navbar-brand img {
-            height: 50px; /* Increased size of the logo */
-            width: auto; /* Maintain aspect ratio */
+            height: 50px;
+            width: auto;
         }
 
-        .navbar-brand {
-            padding: 0; /* Remove padding around the logo */
+        .navbar-nav .profile-name {
+            color: #fff;
+            font-weight: 600;
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
         }
     </style>
 </head>
-<body class="light-mode">
+<body>
 
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
-            <!-- Logo only (no text) -->
             <a class="navbar-brand" href="{{ url('/') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo"> <!-- Logo without text -->
+                <img src="{{ asset('images/logo.png') }}" alt="Logo">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-center">
                     @auth
+                        <li class="nav-item">
+                            <span class="profile-name">{{ Auth::user()->username }}</span>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url('/') }}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                            <a class="nav-link" href="{{ route('logout') }}" 
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                               Logout
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
-                                <button type="submit" class="btn btn-logout">Logout</button>
                             </form>
                         </li>
                     @else
@@ -140,12 +121,5 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Toggle Dark Mode
-        function toggleDarkMode() {
-            const body = document.body;
-            body.classList.toggle("dark-mode");
-        }
-    </script>
 </body>
 </html>
