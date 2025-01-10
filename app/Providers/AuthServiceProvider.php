@@ -18,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
         Letter::class => LetterPolicy::class, // Register the policy
     ];
 
+
     /**
      * Register any authentication / authorization services.
      *

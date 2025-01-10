@@ -3,12 +3,12 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use App\Rules\ProhibitedWords;
+
 
 class ProhibitedWords implements Rule
 {
-    private $prohibitedWords = [
-        'badword1', 'badword2', 'badword3', // Add more words to the list
-    ];
+    protected $prohibitedWords = ['badword1', 'badword2', 'inappropriate'];
 
     /**
      * Determine if the validation rule passes.
@@ -35,6 +35,6 @@ class ProhibitedWords implements Rule
      */
     public function message()
     {
-        return 'The :attribute contains prohibited words.';
+        return 'Your letter contains prohibited words. Please revise it.';
     }
 }

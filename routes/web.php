@@ -7,15 +7,12 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\VerifiedController;
 use Illuminate\Http\Request;
 
-Route::get('/', [LetterController::class, 'index']); // Home route
 
-// Only one route definition for letters resource
-Route::resource('letters', LetterController::class); // RESTful routes for letters
-Route::post('/letters/{letter}/comments', [CommentController::class, 'store'])->name('comments.store'); // Route to store comments
+// Home route - this will now point to home.blade
+Route::get('/home', [LetterController::class, 'index'])->name('home');
 
-Auth::routes(); // Remove if using custom authentication routes
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Auth routes (only if you're using the default Laravel authentication)
+Auth::routes(); 
 
 // Email verification routes
 Route::get('/email/verify', function () {
@@ -32,24 +29,27 @@ Route::post('/email/verification-notification', function (Request $request) {
     return back()->with('message', 'Verification link sent!');
 })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
-Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-});
-
-// Protect routes for logged-in users and verified users
+// Protect routes for logged-in and verified users
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Letters Routes
-    Route::resource('letters', LetterController::class);
+    // Letters Routes (except index and show)
+    Route::resource('letters', LetterController::class)->except(['index', 'show']);
 
-    // Comment Routes
+    // Comment Routes (for authenticated and verified users)
     Route::post('/letters/{letter}/comments', [CommentController::class, 'store'])->name('comments.store');
 });
 
-// Admin routes
+// Public routes for letters (index and show)
+Route::get('/letters', [LetterController::class, 'index'])->name('letters.index');
+Route::get('/letters/{letter}', [LetterController::class, 'show'])->name('letters.show');
+
+// Admin routes (if needed for admin control)
 Route::middleware(['admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 });
 
 // Logout route
-//Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
+
+
+// Home route
+Route::get('/', [LetterController::class, 'index'])->name('home');
